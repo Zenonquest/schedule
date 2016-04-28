@@ -122,10 +122,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-##from djangogirls
-# DATABASES['default'] = dj_database_url.config()
+# from djangogirls
+DATABASES['default'] = dj_database_url.config()
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
