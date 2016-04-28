@@ -16,10 +16,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "schedule2.settings")
 
 
 
-##from djangogirls
-# from whitenoise.django import DjangoWhiteNoise
-# application = DjangoWhiteNoise(application)
-
-from dj_static import Cling
-
-application = Cling(get_wsgi_application())
+#from djangogirls
+from whitenoise.django import DjangoWhiteNoise
+application = DjangoWhiteNoise(application)
