@@ -18,4 +18,4 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "schedule2.settings")
 
 #from djangogirls
 from whitenoise.django import DjangoWhiteNoise
-application = DjangoWhiteNoise(application)
+application = DjangoWhiteNoise(get_wsgi_application())
