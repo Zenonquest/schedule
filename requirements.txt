@@ -6,7 +6,10 @@ django-filter==0.13.0
 django-toolbelt==0.0.1
 djangorestframework==3.3.3
 gunicorn==19.4.5
+Jinja==1.2
+Jinja2==2.8
 Markdown==2.6.6
+MarkupSafe==0.23
 psycopg2==2.6.1
 pytz==2016.4
 static3==0.6.1
