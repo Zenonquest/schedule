@@ -1,0 +1,1 @@
+@"c:\users\zq\envs\schedule\scripts\python.exe" "c:\users\zq\envs\schedule\Scripts\markdown_py" %*
