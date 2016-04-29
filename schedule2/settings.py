@@ -14,9 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -121,8 +118,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# from djangogirls
+# Update database configuration with $DATABASE_URL.
 import dj_database_url
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 # DATABASES['default'] = dj_database_url.config()
 
 # DATABASES = {'default': dj_database_url.config(default='postgres://foo:bar@localhost:5432/db')}
@@ -136,10 +135,13 @@ ALLOWED_HOSTS = ['*']
 ##from python-getting-started
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# # Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(PROJECT_ROOT, 'static'),
-# )
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
