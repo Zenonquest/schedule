@@ -94,10 +94,10 @@ def event_element(request, pk):
 					continue
 				if teachers_skill[idx] == False:
 					break
-
-			data = {'student':student.student_id, 'teacher':teacher.id, 'start_datetime':student.monday_start, 'duration':student.monday_duration, 'notes':"test note"}
-			serializer = EventSerializer(data=data)
+				data = {'student':student.student_id, 'teacher':teacher.id, 'start_datetime':student.monday_start, 'duration':student.monday_duration, 'notes':"test note"}
+				#use serializer to add row to event table
+				serializer = EventSerializer(data=data)
 			if serializer.is_valid():
 				serializer.save()
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
-			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -13,5 +13,6 @@ urlpatterns = [
     #api
     url(r'^api/v1/teachers/$', views.teacher_collection),
     url(r'^api/v1/teachers/(?P<pk>[0-9]+)/$', views.teacher_element),
-    url(r'^api/v1/events/$', views.event_collection)
+    url(r'^api/v1/events/$', views.event_collection),
+    url(r'^api/v1/events/(?P<pk>[0-9]+)/$', views.event_element)
 ]

@@ -167,7 +167,7 @@ class Student(models.Model):
 	student_id = models.IntegerField(default=0, primary_key=True)
 	student_name = models.CharField(max_length=200, unique=True)
 	#Student's requested dates
-	start_date = models.DateField('start date', default=timezone.now().date())
+	start_date = models.DateField('start date', blank=True)
 	end_date = models.DateField('end date', null=True, blank=True)
 	scheduled_hours = models.FloatField('scheduled hours', null=True, blank=True)
 	#Student's schedule: available start, availabe end, max duration
