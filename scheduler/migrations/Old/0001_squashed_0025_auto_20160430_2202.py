@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Event',
             fields=[
-                ('id', models.IntegerField(default=0, primary_key=True, serialize=False)),
+                ('event_id', models.IntegerField(default=0, primary_key=True, serialize=False)),
                 ('start_datetime', models.DateTimeField(verbose_name='start datetime')),
                 ('duration', models.FloatField(default=0)),
                 ('notes', models.CharField(max_length=200)),
@@ -131,22 +131,5 @@ class Migration(migrations.Migration):
             name='teacher',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='scheduler.User'),
         ),
-        migrations.RemoveField(
-            model_name='event',
-            name='start_datetime',
-        ),
-        migrations.RemoveField(
-            model_name='event',
-            name='id',
-        ),
-        migrations.AddField(
-            model_name='event',
-            name='event_id',
-            field=models.IntegerField(default=0, primary_key=True, serialize=False, unique=True),
-        ),
-        migrations.AddField(
-            model_name='event',
-            name='start_datetime',
-            field=models.DateTimeField(default=django.utils.timezone.now, verbose_name='Start Date'),
-        ),
+
     ]
