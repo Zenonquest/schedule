@@ -4,7 +4,7 @@
 {% if teachers_list %}
 	<ul>
 	{% for teacher in teachers_list %}
-		<li><a href="{% url 'scheduler:teacher detail' teacher.id %}">{{teacher.nickname}}</a></li>
+		<li><a href="{% url 'scheduler:teacher detail' teacher.teacher_id %}">{{teacher.nickname}}</a></li>
 	{% endfor %}
 	</ul>
 {% else %}

@@ -6,7 +6,7 @@ import datetime
 
 # Create your models here.
 class Teacher(models.Model):
-	id = models.IntegerField(default=0, primary_key=True)
+	teacher_id = models.IntegerField(default=0, unique=True, primary_key=True)
 	nickname = models.CharField(max_length=200, unique=True)
 	#Teacher's schedule: available start, availabe end, max duration(default=end-start)
 	monday_start = models.TimeField('monday start', null=True, blank=True)
@@ -164,10 +164,11 @@ class Teacher(models.Model):
 
 class Student(models.Model):
 	##necessary for creation
-	student_id = models.IntegerField(default=0, primary_key=True)
+	student_id = models.IntegerField(default=0, unique=True, primary_key=True)
 	student_name = models.CharField(max_length=200, unique=True)
 	#Student's requested dates
-	start_date = models.DateField('start date', blank=True)
+	# start_date = models.DateField('start date', blank=True)
+	start_datetime = models.DateTimeField('start datetime', default=timezone.now)
 	end_date = models.DateField('end date', null=True, blank=True)
 	scheduled_hours = models.FloatField('scheduled hours', null=True, blank=True)
 	#Student's schedule: available start, availabe end, max duration
@@ -252,8 +253,9 @@ class Student(models.Model):
 		return skills_list
 
 class Event(models.Model):
-	event_id = models.IntegerField(default=0, primary_key=True)
-	start_datetime = models.TimeField('Start Date')
+	event_id = models.IntegerField(default=0, unique=True, primary_key=True)
+	# id=models.IntegerField(default=0)
+	start_datetime = models.DateTimeField('Start Date', default=timezone.now)
 	duration = models.FloatField(default=0)
 	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 	student = models.ForeignKey(Student, on_delete=models.CASCADE)

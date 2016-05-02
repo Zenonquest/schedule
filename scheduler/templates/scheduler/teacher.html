@@ -1,1 +1,11 @@
 <h1>{{ teacher.nickname }}</h1>
+<ul>
+<li>id: {{ teacher.teacher_id }}</li>
+{% if teacher.get_skills %}
+
+{% for skill in teacher.get_skills %}
+<li> skill {{forloop.counter}}: {{skill}} </li>
+{% endfor %}
+
+{% endif %}
+</ul>
