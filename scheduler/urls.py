@@ -11,8 +11,8 @@ urlpatterns = [
     url(r'^event/$', views.EventIndexView.as_view(), name='event list'),
 
     #api
-    url(r'^api/v1/teachers/$', views.teacher_collection),
-    url(r'^api/v1/teachers/(?P<pk>[0-9]+)/$', views.teacher_element),
-    url(r'^api/v1/events/$', views.event_collection),
-    url(r'^api/v1/events/(?P<pk>[0-9]+)/$', views.event_element)
+    url(r'^api/teacher/$', views.teacher_collection),
+    url(r'^api/teacher/(?P<pk>[0-9]+)/$', views.teacher_element),
+    url(r'^api/event/$', views.event_collection),
+    url(r'^api/event/(?P<pk>[0-9]+)/$', views.event_element)
 ]
