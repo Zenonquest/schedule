@@ -257,8 +257,8 @@ class Event(models.Model):
 	# id=models.IntegerField(default=0)
 	start_datetime = models.DateTimeField('Start Date', default=timezone.now)
 	duration = models.FloatField(default=0)
-	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE)
+	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default=-1)
+	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=-1)
 	notes = models.CharField(max_length=200)
 
 	def __repr__(self):
