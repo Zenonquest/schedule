@@ -57,11 +57,28 @@ def teacher_element(request, pk):
 		serializer = TeacherSerializer(teacher)
 		return Response(serializer.data)
 
+@api_view(['GET'])
+def student_collection(request):
+	if request.method == 'GET':
+		students = Student.objects.all()
+		serializer = StudentSerializer(students, many=True)
+		return Response(serializer.data)
+
+@api_view(['GET'])
+def student_element(request, pk):
+	try:
+		student = Student.objects.get(pk=pk)
+	except Student.DoesNotExist:
+		return HttpResponse(status=404)
+
+	if request.method == 'GET':
+		serializer = StudentSerializer(student)
+		return Response(serializer.data)
 
 @api_view(['GET','POST'])
 def event_collection(request):
 	if request.method == 'GET':
-		event = Event.objects.all()
+		events = Event.objects.all()
 		serializer = EventSerializer(events, many=True)
 		return Response(serializer.data)
 	if request.method == 'POST':
