@@ -94,8 +94,12 @@ def event_collection(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(['GET','POST'])
 def event_element(request, pk):
+	if request.method == 'GET':
+		event = Event.objects.get(pk=pk)
+		serializer = EventSerializer(event, many=True)
+		return Response(serializer.data)
 	if request.method == 'POST':
 		teachers = Teacher.objects.all()
 		student = Student.objects.get(pk=pk)
