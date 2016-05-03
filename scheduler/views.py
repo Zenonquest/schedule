@@ -5,7 +5,7 @@ from django.views import generic
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import TeacherSerializer, EventSerializer
+from .serializers import TeacherSerializer, StudentSerializer, EventSerializer
 
 
 from .models import Teacher, Student, Event
