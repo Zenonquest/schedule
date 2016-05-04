@@ -40,7 +40,7 @@ class EventIndexView(generic.ListView):
 
 #return all teachers
 #POST: edit all teachers (only monday_duration)
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def teacher_collection(request):
 	if request.method == 'GET':
 		teachers = Teacher.objects.all()
@@ -57,7 +57,7 @@ def teacher_collection(request):
 
 #return one teacher
 #POST: edit one teacher
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def teacher_element(request, pk):
 	try:
 		teacher = Teacher.objects.get(pk=pk)
