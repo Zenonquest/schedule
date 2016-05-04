@@ -50,8 +50,9 @@ def teacher_collection(request):
 		data = request.data
 		teachers = Teacher.objects.all()
 		for teacher in teachers:
-			teacher.monday_duration = request.POST.get('monday_duration')
-			teacher.save()
+			data = request.data.get('monday_duration')
+			serializer = TeacherSerializer(teacher, data=data, partial=True)
+			serializer.save()
 		updated_teachers = Teacher.objects.all()
 		return Response(updated_teachers, status=status.HTTP_201_CREATED)
 
