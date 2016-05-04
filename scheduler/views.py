@@ -69,7 +69,7 @@ def teacher_element(request, pk):
 		return Response(serializer.data)
 
 	if request.method == 'POST':
-		data = {'monday_duration': request.data.get('monday_duration')}
+		data = request.data.get()
 		serializer = TeacherSerializer(teacher, data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()
