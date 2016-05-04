@@ -38,7 +38,7 @@ class EventIndexView(generic.ListView):
 	def get_queryset(self):
 		return Event.objects.order_by('pk')
 
-
+#return all teachers
 @api_view(['GET'])
 def teacher_collection(request):
 	if request.method == 'GET':
@@ -46,6 +46,7 @@ def teacher_collection(request):
 		serializer = TeacherSerializer(teachers, many=True)
 		return Response(serializer.data)
 
+#return one teacher
 @api_view(['GET'])
 def teacher_element(request, pk):
 	try:
@@ -57,6 +58,7 @@ def teacher_element(request, pk):
 		serializer = TeacherSerializer(teacher)
 		return Response(serializer.data)
 
+#return all students
 @api_view(['GET'])
 def student_collection(request):
 	if request.method == 'GET':
@@ -64,6 +66,7 @@ def student_collection(request):
 		serializer = StudentSerializer(students, many=True)
 		return Response(serializer.data)
 
+#return all students
 @api_view(['GET'])
 def student_element(request, pk):
 	try:
@@ -75,6 +78,8 @@ def student_element(request, pk):
 		serializer = StudentSerializer(student)
 		return Response(serializer.data)
 
+#GET: return all events
+#POST: add new event
 @api_view(['GET','POST'])
 def event_collection(request):
 	if request.method == 'GET':
@@ -93,12 +98,13 @@ def event_collection(request):
 					return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+#GET: return one event
+#POST: edit one event
 @api_view(['GET','POST'])
 def event_element(request, pk):
 	if request.method == 'GET':
 		event = Event.objects.get(pk=pk)
-		serializer = EventSerializer(event, many=True)
+		serializer = EventSerializer(event)
 		return Response(serializer.data)
 	if request.method == 'POST':
 		teachers = Teacher.objects.all()
