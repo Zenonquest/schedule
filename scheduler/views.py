@@ -56,7 +56,8 @@ def teacher_collection(request):
 				serializer.save()
 		updated_teachers = Teacher.objects.all()
 		serializer = TeacherSerializer(teachers, many=True)
-		return Response(serializer, status=status.HTTP_201_CREATED)
+		if serializer.is_valid():
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 #return one teacher
 #POST: edit one teacher
