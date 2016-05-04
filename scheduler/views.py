@@ -73,7 +73,7 @@ def teacher_element(request, pk):
 		serializer = TeacherSerializer(teacher, data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()
-			return Response(teacher, status=status.HTTP_201_CREATED)
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #return all students
