@@ -39,14 +39,24 @@ class EventIndexView(generic.ListView):
 		return Event.objects.order_by('pk')
 
 #return all teachers
+#POST: edit all teachers (only monday_duration)
 @api_view(['GET'])
 def teacher_collection(request):
 	if request.method == 'GET':
 		teachers = Teacher.objects.all()
 		serializer = TeacherSerializer(teachers, many=True)
 		return Response(serializer.data)
+	if request.method == 'POST':
+		data = request.data
+		teachers = Teacher.objects.all()
+		for teacher in teachers:
+			teacher.monday_duration = request.POST.get('monday_duration')
+			teacher.save()
+		updated_teachers = Teacher.objects.all()
+		return Response(updated_teachers, status=status.HTTP_201_CREATED)
 
 #return one teacher
+#POST: edit one teacher
 @api_view(['GET'])
 def teacher_element(request, pk):
 	try:
@@ -57,6 +67,10 @@ def teacher_element(request, pk):
 	if request.method == 'GET':
 		serializer = TeacherSerializer(teacher)
 		return Response(serializer.data)
+
+	if request.method == 'POST':
+		teacher.monday_duration = request.POST.get('monday_duration')
+		return Response(teacher, status=status.HTTP_201_CREATED)
 
 #return all students
 @api_view(['GET'])
@@ -223,4 +237,4 @@ def event_element(request, pk):
 				serializer.save()
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		return Response(status=status.HTTP_400_BAD_REQUEST) 
+		return HttpResponse('I\'m a teapot short and stout.', status=418)
