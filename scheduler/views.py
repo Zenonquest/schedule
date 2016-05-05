@@ -88,7 +88,7 @@ def student_collection(request):
 		return Response(serializer.data)
 
 #return all students
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def student_element(request, pk):
 	try:
 		student = Student.objects.get(pk=pk)
@@ -98,6 +98,13 @@ def student_element(request, pk):
 	if request.method == 'GET':
 		serializer = StudentSerializer(student)
 		return Response(serializer.data)
+	if request.method == 'POST':
+		data = {'monday_duration': request.data.get('monday_duration')}
+		serializer = StudentSerializer(student, data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #GET: return all events
 #POST: add new event
