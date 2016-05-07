@@ -5,7 +5,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Teacher
-		fields = ('nickname', 
+		fields = ('id', 'nickname', 
 			'monday_start', 'monday_end', 'monday_duration', 
 			'tuesday_start', 'tuesday_end', 'tuesday_duration',
 			'wednesday_start', 'wednesday_end', 'wednesday_duration',
@@ -15,7 +15,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Student
-		fields = ('student_name', 
+		fields = ('student_id', 'student_name', 
 			'monday_start', 'monday_end', 'monday_duration', 
 			'tuesday_start', 'tuesday_end', 'tuesday_duration',
 			'wednesday_start', 'wednesday_end', 'wednesday_duration',
@@ -25,4 +25,4 @@ class EventSerializer(serializers.ModelSerializer):
 
 	class Meta: 
 		model = Event
-		fields = ('teacher', 'student', 'start_datetime', 'duration', 'notes')
+		fields = ('event_id', 'teacher', 'student', 'start_datetime', 'duration', 'notes')

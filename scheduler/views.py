@@ -38,8 +38,8 @@ class EventIndexView(generic.ListView):
 	def get_queryset(self):
 		return Event.objects.order_by('pk')
 
-#return all teachers
-#POST: edit all teachers (only monday_duration)
+#GET: return all teachers
+#POST: creates teacher (body needs nickname)
 @api_view(['GET', 'POST'])
 def teacher_collection(request):
 	if request.method == 'GET':
@@ -47,26 +47,27 @@ def teacher_collection(request):
 		serializer = TeacherSerializer(teachers, many=True)
 		return Response(serializer.data)
 	if request.method == 'POST':
-		data = request.data
-		teachers = Teacher.objects.all()
-		for teacher in teachers:
-			data = request.data.get('monday_duration')
-			serializer = TeacherSerializer(teacher, data=data, partial=True)
-			if serializer.is_valid():
-				serializer.save()
-		updated_teachers = Teacher.objects.all()
-		serializer = TeacherSerializer(teachers, many=True)
-		return Response(serializer.data)
+		data = {'nickname': request.data.get("nickname")}
+		
+		serializer = TeacherSerializer(data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
+		
+		
 
-#return one teacher
+#GET: return one teacher
 #POST: edit one teacher
 @api_view(['GET', 'POST'])
 def teacher_element(request, pk):
+	#collect single teacher before processing request
 	try:
 		teacher = Teacher.objects.get(pk=pk)
 	except Teacher.DoesNotExist:
 		return HttpResponse(status=404)
-
+		
 	if request.method == 'GET':
 		serializer = TeacherSerializer(teacher)
 		return Response(serializer.data)
@@ -77,15 +78,26 @@ def teacher_element(request, pk):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return HttpResponse('I\'m a teapot short and stout.', status=418)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
-#return all students
-@api_view(['GET'])
+#GET: return all students
+#POST: create student (body needs student_name)
+@api_view(['GET', 'POST'])
 def student_collection(request):
 	if request.method == 'GET':
 		students = Student.objects.all()
 		serializer = StudentSerializer(students, many=True)
 		return Response(serializer.data)
+	if request.method == 'POST':
+		data = {'student_name': request.data.get("student_name")}
+		
+		serializer = StudentSerializer(data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #return all students
 @api_view(['GET', 'POST'])
@@ -104,7 +116,8 @@ def student_element(request, pk):
 		if serializer.is_valid():
 			serializer.save()
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
-		return HttpResponse('I\'m a teapot short and stout.', status=418)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #GET: return all events
 #POST: add new event
