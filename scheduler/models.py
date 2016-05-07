@@ -193,6 +193,38 @@ class Student(models.Model):
 	sunday_start = models.TimeField('sunday start', null=True, blank=True)
 	sunday_end = models.TimeField('sunday end', null=True, blank=True)
 	sunday_duration = models.FloatField(default=0)
+
+	#student's preferred teachers
+	preferred_teacher1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred1', blank=True, null=True)
+	preferred_teacher2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred2', blank=True, null=True)
+	preferred_teacher3 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred3', blank=True, null=True)
+
+	#student's rejected teachers
+	rejected_teacher1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected1', blank=True, null=True)
+	rejected_teacher2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected2', blank=True, null=True)
+	rejected_teacher3 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected3', blank=True, null=True)
+
+
+	#print student nickname
+	def __repr__(self):
+		return '<Post %r>' % (self.student_name)
+
+	def __unicode__(self):
+		return self.student_name
+
+	def get_skills(self):
+		skills_list = [self.skill_1, self.skill_2, self.skill_3, self.skill_4, self.skill_5, self.skill_6, self.skill_7, self.skill_8, self.skill_9, self.skill_10, self.skill_11, self.skill_12, self.skill_13, self.skill_14, self.skill_15]
+		return skills_list
+
+class Event(models.Model):
+	event_id = models.AutoField(primary_key=True)
+	# id=models.IntegerField(default=0)
+	start_datetime = models.DateTimeField('Start Date', default=timezone.now)
+	duration = models.FloatField(default=0)
+	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default=-1)
+	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=-1)
+	notes = models.CharField(max_length=200)
+
 	###Requested Skills (identified through skills table)(default=False)
 	##ACT
 	#English
@@ -228,38 +260,6 @@ class Student(models.Model):
 	#Spanish
 	skill_15 = models.BooleanField('Spanish', default=False)
 
-
-
-	#student's preferred teachers
-	preferred_teacher1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred1', blank=True, null=True)
-	preferred_teacher2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred2', blank=True, null=True)
-	preferred_teacher3 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='preferred3', blank=True, null=True)
-
-	#student's rejected teachers
-	rejected_teacher1 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected1', blank=True, null=True)
-	rejected_teacher2 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected2', blank=True, null=True)
-	rejected_teacher3 = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='rejected3', blank=True, null=True)
-
-
-	#print student nickname
-	def __repr__(self):
-		return '<Post %r>' % (self.student_name)
-
-	def __unicode__(self):
-		return self.student_name
-
-	def get_skills(self):
-		skills_list = [self.skill_1, self.skill_2, self.skill_3, self.skill_4, self.skill_5, self.skill_6, self.skill_7, self.skill_8, self.skill_9, self.skill_10, self.skill_11, self.skill_12, self.skill_13, self.skill_14, self.skill_15]
-		return skills_list
-
-class Event(models.Model):
-	event_id = models.AutoField(primary_key=True)
-	# id=models.IntegerField(default=0)
-	start_datetime = models.DateTimeField('Start Date', default=timezone.now)
-	duration = models.FloatField(default=0)
-	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, default=-1)
-	student = models.ForeignKey(Student, on_delete=models.CASCADE, default=-1)
-	notes = models.CharField(max_length=200)
 
 	def __repr__(self):
 		return '<Event %s, %s, %s>' % (self.teacher, self.student, self.start_datetime)
