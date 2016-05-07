@@ -5,7 +5,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = Teacher
-		fields = ('id', 'nickname', 
+		fields = ('teacher_id', 'nickname', 
 			'monday_start', 'monday_end', 'monday_duration', 
 			'tuesday_start', 'tuesday_end', 'tuesday_duration',
 			'wednesday_start', 'wednesday_end', 'wednesday_duration',
