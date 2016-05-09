@@ -46,9 +46,9 @@ def teacher_collection(request):
 		teachers = Teacher.objects.all()
 		serializer = TeacherSerializer(teachers, many=True)
 		return Response(serializer.data)
+	
 	if request.method == 'POST':
 		data = {'nickname': request.data.get("nickname")}
-		
 		serializer = TeacherSerializer(data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()
@@ -60,6 +60,7 @@ def teacher_collection(request):
 
 #GET: return one teacher
 #POST: edit one teacher
+#editable fields: all
 @api_view(['GET', 'POST'])
 def teacher_element(request, pk):
 	#collect single teacher before processing request
@@ -73,7 +74,7 @@ def teacher_element(request, pk):
 		return Response(serializer.data)
 
 	if request.method == 'POST':
-		data = {'monday_duration': request.data.get('monday_duration')}
+		data = request.data
 		serializer = TeacherSerializer(teacher, data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()
@@ -100,6 +101,7 @@ def student_collection(request):
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #return all students
+#edit student. all fields available
 @api_view(['GET', 'POST'])
 def student_element(request, pk):
 	try:
@@ -110,8 +112,9 @@ def student_element(request, pk):
 	if request.method == 'GET':
 		serializer = StudentSerializer(student)
 		return Response(serializer.data)
+
 	if request.method == 'POST':
-		data = {'monday_duration': request.data.get('monday_duration')}
+		data = request.data
 		serializer = StudentSerializer(student, data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()

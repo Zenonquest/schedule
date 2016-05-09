@@ -260,6 +260,8 @@ class Event(models.Model):
 	#Spanish
 	skill_15 = models.BooleanField('Spanish', default=False)
 
+	
+
 
 	def __repr__(self):
 		return '<Event %s, %s, %s>' % (self.teacher, self.student, self.start_datetime)
