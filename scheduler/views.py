@@ -4,12 +4,12 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import TeacherSerializer, StudentSerializer, EventSerializer
+from rest_framework import status, viewsets, permissions
+from .serializers import TeacherSerializer, StudentSerializer, EventSerializer, SkillSerializer, UserSerializer, GroupSerializer
+from oauth2_provider.ext.rest_framework import TokenHasReadWriteScope, TokenHasScope
 
-
-from .models import Teacher, Student, Event
-
+from .models import Teacher, Student, Event, Skill
+from django.contrib.auth.models import User, Group
 
 class IndexView(generic.ListView):
 	template_name = 'scheduler/index.html'
@@ -56,8 +56,6 @@ def teacher_collection(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
 		
-		
-
 #GET: return one teacher
 #POST: edit one teacher
 #editable fields: all
@@ -90,9 +88,9 @@ def student_collection(request):
 		students = Student.objects.all()
 		serializer = StudentSerializer(students, many=True)
 		return Response(serializer.data)
+	
 	if request.method == 'POST':
-		data = {'student_name': request.data.get("student_name")}
-		
+		data = request.data
 		serializer = StudentSerializer(data=data, partial=True)
 		if serializer.is_valid():
 			serializer.save()
@@ -124,6 +122,7 @@ def student_element(request, pk):
 
 #GET: return all events
 #POST: add new event
+##post request requires: student_id, teacher_id, start_datetime, end_datetime
 @api_view(['GET','POST'])
 def event_collection(request):
 	if request.method == 'GET':
@@ -131,140 +130,89 @@ def event_collection(request):
 		serializer = EventSerializer(events, many=True)
 		return Response(serializer.data)
 	if request.method == 'POST':
-		teachers = Teacher.objects.all()
-		student = Student.objects.get(pk=1)
-		for teacher in teachers:
-			if student.monday_start < teacher.monday_end:
-				data = {'student':student.student_id, 'teacher':teacher.id, 'start_datetime':student.monday_start, 'duration':student.monday_duration, 'notes':"test note"}
-				serializer = EventSerializer(data=data)
-				if serializer.is_valid():
-					serializer.save()
-					return Response(serializer.data, status=status.HTTP_201_CREATED)
+		data = {'student':request.data.get("student_id"), 'teacher':request.data.get("teacher_id")}
+		serializer = EventSerializer(data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 #GET: return one event
-#POST: edit one event
+#POST: edit one event's skills, skills{'skill_1: True, 'skill_2':False...}
 @api_view(['GET','POST'])
 def event_element(request, pk):
+	try:
+		event = Event.objects.get(pk=pk)
+	except Event.DoesNotExist:
+		return HttpResponse(status=404)
 	if request.method == 'GET':
 		event = Event.objects.get(pk=pk)
 		serializer = EventSerializer(event)
 		return Response(serializer.data)
 	if request.method == 'POST':
-		teachers = Teacher.objects.all()
-		student = Student.objects.get(pk=pk)
-		student_skills = student.get_skills()
-		for teacher in teachers:
-			teacher_skills = teacher.get_skills()
-			#check monday match
-			if student.monday_start: 
-				if teacher.monday_start:
-					if student.monday_start < teacher.monday_start:
-						continue;
-				else: 
-					continue;
-			if student.monday_end: 
-				if teacher.monday_end:
-					if student.monday_end > teacher.monday_end:
-						continue
-				else:
-					continue;
-			#check tuesday match
-			if student.tuesday_start: 
-				if teacher.tuesday_start:
-					if student.tuesday_start < teacher.tuesday_start:
-						continue
-				else:
-					continue;
-			if student.tuesday_end: 
-				if teacher.tuesday_end:
-					if student.tuesday_end > teacher.tuesday_end:
-						continue
-				else:
-					continue;
-			#check wednesday match
-			if student.wednesday_start: 
-				if teacher.wednesday_start:
-					if student.wednesday_start < teacher.wednesday_start:
-						continue
-				else:
-					continue;
-			if student.wednesday_end: 
-				if teacher.wednesday_end:
-					if student.wednesday_end > teacher.wednesday_end:
-						continue
-				else:
-					continue;
-			#check thursday match
-			if student.thursday_start: 
-				if teacher.thursday_start:
-					if student.thursday_start < teacher.thursday_start:
-						continue
-				else:
-					continue
-			if student.thursday_end: 
-				if teacher.thursday_end:
-					if student.thursday_end > teacher.thursday_end:
-						continue
-				else:
-					continue
-			#check friday match
-			if student.friday_start: 
-				if teacher.friday_start:
-					if student.friday_start < teacher.friday_start:
-						continue
-				else:
-					continue
-						
-			if student.friday_end: 
-				if teacher.friday_end:
-					if student.friday_end > teacher.friday_end:
-						continue
-				else:
-					continue
+		data = request.data
+		serializer = EventSerializer(event, data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
-			#check saturday match
-			if student.saturday_start: 
-				if teacher.saturday_start:
-					if student.saturday_start < teacher.saturday_start:
-						continue
-				else:
-					continue
-						
-			if student.saturday_end: 
-				if teacher.saturday_end:
-					if student.saturday_end > teacher.saturday_end:
-						continue
-				else:
-					continue
 
-			#check sunday match
-			if student.sunday_start: 
-				if teacher.sunday_start:
-					if student.sunday_start < teacher.sunday_start:
-						continue
-				else:
-					continue
-						
-			if student.sunday_end: 
-				if teacher.sunday_end:
-					if student.sunday_end > teacher.sunday_end:
-						continue
-				else:
-					continue
-			#check for skills match												
-			for idx, skill in enumerate(student_skills):
-				if skill == False:
-					continue
-				if teacher_skills[idx] == False:
-					break
+#GET: return all skills lists
+#POST: add one skill list, request must be dictionary w ALL skills (skills{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+@api_view(['GET', 'POST'])
+def skill_collection(request):
+	if request.method == 'GET':
+		skills = Skill.objects.all()
+		serializer = SkillSerializer(skills, many=True)
+		return Response(serializer.data)
+	if request.method == 'POST':
+		data = request.data
+		serializer = SkillSerializer(data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
-			#if schedule match and skills match then create event.
-			data = {'student':student.student_id, 'teacher':teacher.teacher_id, 'start_datetime':student.start_datetime, 'duration':student.monday_duration, 'notes':"test note"}
-			#use serializer to add row to event table
-			serializer = EventSerializer(data=data)
-			if serializer.is_valid():
-				serializer.save()
-				return Response(serializer.data, status=status.HTTP_201_CREATED)
-			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+#GET: return all skills lists
+#POST: edit one skill list, request must be dictionary w ALL skills (skills{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+@api_view(['GET', 'POST'])
+def skill_element(request, pk):
+	try:
+		skill = Skill.objects.get(pk=pk)
+	except Teacher.DoesNotExist:
+		return HttpResponse(status=404)
+		
+	if request.method == 'GET':
+		serializer = SkillSerializer(skill)
+		return Response(serializer.data)
+
+	if request.method == 'POST':
+		data = request.data
+		serializer =SkillSerializer(skill, data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+
+##oauth2
+# ViewSets define the view behavior.
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated, TokenHasReadWriteScope]
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class GroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated, TokenHasScope]
+    required_scopes = ['groups']
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+

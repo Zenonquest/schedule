@@ -1,27 +1,44 @@
 from rest_framework import serializers
-from .models import Teacher, Student, Event
+from .models import Teacher, Student, Event, Skill
+from django.contrib.auth.models import User, Group
 
 class TeacherSerializer(serializers.ModelSerializer):
-
 	class Meta:
 		model = Teacher
-		fields = ('teacher_id', 'nickname', 
-			'monday_start', 'monday_end', 'monday_duration', 
-			'tuesday_start', 'tuesday_end', 'tuesday_duration',
-			'wednesday_start', 'wednesday_end', 'wednesday_duration',
-			'skill_1', 'skill_2', 'skill_3', 'skill_4')
+		# field = ('teacher_id')
+		# fields = ('teacher_id', 'nickname', 
+		# 	'monday_start', 'monday_end', 'monday_duration', 
+			# 'tuesday_start', 'tuesday_end', 'tuesday_duration')
 
 class StudentSerializer(serializers.ModelSerializer):
-
 	class Meta:
 		model = Student
-		fields = ('student_id', 'student_name', 
-			'monday_start', 'monday_end', 'monday_duration', 
-			'tuesday_start', 'tuesday_end', 'tuesday_duration',
-			'wednesday_start', 'wednesday_end', 'wednesday_duration')
+		# fields = ('student_id', 'student_name', 
+		# 	'monday_start', 'monday_end', 'monday_duration', 
+		# 	'tuesday_start', 'tuesday_end', 'tuesday_duration',
+		# 	'wednesday_start', 'wednesday_end', 'wednesday_duration')
 
 class EventSerializer(serializers.ModelSerializer):
-
 	class Meta: 
 		model = Event
-		fields = ('event_id', 'teacher', 'student', 'start_datetime', 'duration', 'notes')
+		fields = ('event_id', 'teacher', 'student', 'start_datetime', 'end_datetime')
+
+# class OpenEventSerializer(serializers.ModelSerializer):
+# 	class Meta: 
+# 		model = OpenEvent
+# 		fields = ('openevent_id', 'teacher', 'student', 'start_datetime', 'end_datetime')
+
+class SkillSerializer(serializers.ModelSerializer):
+	class Meta: 
+		model = Skill
+
+##oauth2
+# first we define the serializers
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+
+
+class GroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Group
