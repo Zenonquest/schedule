@@ -1,0 +1,115 @@
+TEACHER
+Fields/Columns:  teacher_id(int), nickname(char)
+/api/teacher/
+GET:
+Parameters: none
+Response: array of all teachers (all fields)
+POST:
+Parameters: Teacher.nickname
+Action: Add new teacher with that nickname
+Response: New Teacher object
+
+/api/teacher/<teacher_id>
+GET:
+Parameters: none
+Response: teacher object matching <teacher_id> (all fields)
+POST:
+Parameters: All teacher fields acceptable (optional)
+Action: Edit teacher object matching teacher_id, return teacher object.
+Response: Edited Teacher object
+
+
+ 
+STUDENT
+Fields/Columns:  student_id(int), student_name(char), preferred_teacher1(foreignkey int), preferred_teacher2(foreignkey int), preferred_teacher3(foreignkey int), rejected_teacher1(foreignkey int), rejected_teacher2(foreignkey int), rejected_teacher3(foreignkey int)
+/api/student/
+GET:
+Parameters: none
+Response: array of all students (all fields)
+POST:
+Parameters: Student.nickname
+Action: Add new student with that nickname
+Response: New Student object
+
+/api/student/<student_id>
+GET:
+Parameters: none
+Response: student object matching <student_id> (all fields)
+POST:
+Parameters: All student fields acceptable (optional)
+Action: Edit student object matching student_id, return student object.
+Response: Edited Student object
+ 
+EVENT
+Fields/Columns:  event_id(int), start_datetime(datetime), end_datetime(datetime), duration(float), teacher(int foreignkey), student(int foreignkey), notes(char max_length=200)
+/api/event/
+GET:
+Parameters: None
+Response: Return list of all events
+POST:
+Parameters: All event fields acceptable (optional), teacher_id and student_id are mandatory.
+Action: Add new event with teacher and student, adds event to google calendar(primary)
+Response: New event
+
+/api/event/<event_id>
+GET:
+Parameters: None
+Response: Return single event matching event_id
+POST:
+Parameters: All event fields acceptable(optional)
+Action: Edit single event with given request fields
+Response: Single edited event
+ 
+AVAILABILITY
+Fields/Columns:  monday_start(time), monday_end(time), monday_duration(float), tuesday_start(time), tuesday_end(time), tuesday_duration(float), … , sunday_start(time), sunday_end(time), sunday_duration(float), teacher(int foreignkey)
+/api/availability/
+GET:
+Parameters: None
+Response: Return list of all availability rows
+POST:
+Parameters: All availability fields acceptable (optional)
+Action: Add new availability row 
+Response: New availability 
+
+/api/availability/<pk>
+GET:
+Parameters: None
+Response: Return single availability row matching pk
+POST:
+Parameters: All availability fields acceptable(optional)
+Action: Edit single availability with given request fields
+Response: Single edited availability
+ 
+SKILLS
+Fields/Columns:  skill_1(bool), skill_2(bool), …, skill_15(bool)
+Skills Key:
+1. ACT-English, 2. ACT-Math, 3. ACT-Reading, 4. ACT-Science, 5. ACT-Writing, 6. Floor-ELA, 7. Floor-Math, 8. Pre-Calc, 9. Calculus, 10. Biology, 11. Chemistry, 12. Physics, 13. Earth/Space 14. History, 15. Spanish
+/api/skill/
+GET:
+Parameters: None
+Response: Return list of all skill rows
+POST:
+Parameters: All skills fields acceptable (optional)
+Action: Add new skills row 
+Response: New skills
+
+/api/availability/<pk>
+GET:
+Parameters: None
+Response: Return single skills row matching pk
+POST:
+Parameters: All skills fields acceptable (optional)
+Action: Edit single skills row with given request fields
+Response: Single edited skills row
+ 
+GOOGLE CALENDAR EVENTS
+/api/gevent/
+GET:
+Parameters: None
+Response: Return list of all google events from primary calendar
+
+/api/gevent/<eventId>* (eventId != event_id, eventId is the gCal event’s ID)
+GET:
+Parameters: None
+Response: Return single google event matching eventId
+

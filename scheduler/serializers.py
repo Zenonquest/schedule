@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Teacher, Student, Event, Skill
+from .models import Teacher, Student, Event, Skill, Availability
 from django.contrib.auth.models import User, Group
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -32,6 +32,10 @@ class SkillSerializer(serializers.ModelSerializer):
 	class Meta: 
 		model = Skill
 
+class AvailabilitySerializer(serializers.ModelSerializer):
+	class Meta: 
+		model = Availability
+
 ##oauth2
 # first we define the serializers
 class UserSerializer(serializers.ModelSerializer):
@@ -42,3 +46,4 @@ class UserSerializer(serializers.ModelSerializer):
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
+

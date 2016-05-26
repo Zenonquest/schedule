@@ -20,5 +20,8 @@ urlpatterns = [
 	url(r'^scheduler/', include('scheduler.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider'))
+    #social auth
+    url(r'^scheduler/', include('social.apps.django_app.urls', namespace='social')),
+    #marinamele 
+    # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider'))
 ]
