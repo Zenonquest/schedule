@@ -31,7 +31,7 @@ CLIENT_SECRETS = {
 		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
 		"token_uri":"https://accounts.google.com/o/oauth2/token",
 		"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
-		"client_secret":os.environ['client_secret'],
+		"client_secret":os.environ['CLIENT_SECRET'],
 		"redirect_uris":[
 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
 			"http://127.0.0.1:8000/scheduler/oauth2callback"
