@@ -153,6 +153,9 @@ class CredentialsModel(models.Model):
 	id = models.ForeignKey(User, primary_key=True)
 	credential = CredentialsField()
 
+class ClientSecret(models.Model):
+	key = models.CharField(max_length=200)
+
 # class Dicty(models.Model):
 # 	name = models.CharField(max_length=50)
 

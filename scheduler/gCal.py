@@ -22,23 +22,28 @@ from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
+
+from .models import ClientSecret
+
+import json
 ###WEB Client Secrets
 ##Client_secrets = db.get..
-CLIENT_SECRETS = {
+CLIENT_SECRETS = json.dumps({
 	"web":{
 		"client_id":"323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com",
 		"project_id":"psyched-oxide-115203",
 		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
 		"token_uri":"https://accounts.google.com/o/oauth2/token",
 		"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
-		"client_secret":os.environ['CLIENT_SECRET'],
+		# "client_secret":os.environ['CLIENT_SECRET'],
+		# "client_secret": CredentialsModel.objects.get(pk=1),
 		"redirect_uris":[
 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
 			"http://127.0.0.1:8000/scheduler/oauth2callback"
 		],
 		"javascript_origins":["http://localhost:8000"]
 	}
-}
+})
 # client_dict = {
 # 	"client_id" : os.environ['client_id'],
 # 	"project_id" : os.environ['project_id'],
