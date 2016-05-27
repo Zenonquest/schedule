@@ -23,7 +23,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 
-from .models import ClientSecret
+from .models import CredentialsModel, ClientSecret
 
 import json
 ###WEB Client Secrets
@@ -36,7 +36,7 @@ CLIENT_SECRETS = json.dumps({
 		"token_uri":"https://accounts.google.com/o/oauth2/token",
 		"auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs",
 		# "client_secret":os.environ['CLIENT_SECRET'],
-		# "client_secret": CredentialsModel.objects.get(pk=1),
+		# "client_secret": ClientsecreT.objects.get(pk=1),
 		"redirect_uris":[
 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
 			"http://127.0.0.1:8000/scheduler/oauth2callback"
