@@ -21,8 +21,8 @@ import httplib2
 from oauth2client.contrib import xsrfutil
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.contrib.django_orm import Storage
-import apiclient
-from apiclient.discovery import build
+import googleapiclient
+from googleapiclient.discovery import build
  
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
