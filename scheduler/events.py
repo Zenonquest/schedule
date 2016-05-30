@@ -6,15 +6,16 @@ from django.contrib.auth.decorators import login_required
 
 from .models import Event
 
+from .gCal import *
+
 from .serializers import EventSerializer
 
 #GET: return all events
 #POST: add new event
 ##post request requires: student_id, teacher_id, start_datetime, end_datetime
-@login_required(login_url='/scheduler/login/')
+@login_required
 @api_view(['GET','POST'])
 def event_collection(request):
-
 	if request.method == 'GET':
 		events = Event.objects.all()
 		serializer = EventSerializer(events, many=True)
@@ -50,3 +51,4 @@ def event_element(request, pk):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+

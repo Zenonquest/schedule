@@ -9,3 +9,4 @@ local_settings.py
 .env
 config.py
 client_secret.json
+old.py

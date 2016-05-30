@@ -1,3 +1,629 @@
+
+
+##views.py
+# @login_required
+# def auth_return(request):
+# 	user = request.user
+# 	if not xsrfutil.validate_token(
+# 		settings.SECRET_KEY, str(request.GET['state']), user):
+# 		return HttpResponseBadRequest()
+# 	FLOW = FlowModel.objects.get(id=user).flow
+# 	credential = FLOW.step2_exchange(request.GET)
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	storage.put(credential)
+# 	return HttpResponseRedirect("/scheduler/home")
+
+
+
+
+
+
+
+###LOCAL Client Secrets
+# /schedule2/scheduler/<file>
+# CLIENT_SECRETS = os.path.join(
+# 	os.path.dirname(__file__), 'client_secret.json')
+
+# cs = str(ClientSecret.objects.get(pk=1))
+
+# CLIENT_SECRETS = {
+# 	"web":{
+# 		"client_id":"323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com",
+# 		"project_id":"psyched-oxide-115203",
+# 		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
+# 		"token_uri":"https://accounts.google.com/o/oauth2/token",
+# 		# "client_secret":os.environ['CLIENT_SECRET'],
+# 		"client_secret": cs,
+# 		"redirect_uris":[
+# 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
+# 			"http://127.0.0.1:8000/scheduler/oauth2callback"
+# 		],
+# 		"javascript_origins":["http://localhost:8000"]
+# 	}
+# # }
+
+# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+
+# SCOPES = (
+# 	'https://www.googleapis.com/auth/calendar',
+# 	'https://www.googleapis.com/auth/drive.metadata.readonly'
+# )
+# # REDIRECT_URI = "https://%s%s" % (
+# # 	get_current_site(request).domain, reverse("scheduler:return"))
+# FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+
+# @login_required
+# @api_view(['GET'])
+# def event_get(request, eventId):
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("oauth2:return"))
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		try:
+# 			event = service.events().get(calendarId='primary', eventId=eventId).execute()
+# 		except Event.DoesNotExist:
+# 			return HttpResponse(status=404)
+# 		return Response(event)
+
+# @login_required
+# @api_view(['GET'])
+# def events_get(request):
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("oauth2:return"))
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		pdb.set_trace()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		events = service.events().list(calendarId='primary').execute()
+# 		return Response(events)
+
+# #add event to google calendar
+# def event_post(request):
+# 	# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("oauth2:return"))
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+# 	pdb.set_trace()
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+		
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		data = request.data
+# 		event = {
+# 			'location': '5127 Sheridan Blvd, Broomfield, CO 80020',
+# 			'start': {
+# 				'timeZone': 'America/Denver',
+# 			},
+# 			'end' : {
+# 				'timeZone': 'America/Denver',
+# 			},
+# 		}
+# 		if 'event_id' in data:
+# 			event['summary']= 'Event' + data['event_id']
+# 		else:
+# 			event['summary']= 'Event w/o ID'
+# 		if 'description' in data:
+# 			event['description']= data['description']
+# 		else:
+# 			event['summary']= 'Test for event w/o ID'
+
+# 		#MANDATORY ARGUMENT
+# 		if 'start_datetime' in data:
+# 			event['start']['dateTime']= data['start_datetime']
+# 		else:
+# 			event['start']['dateTime']='2016-05-28T20:00:00-07:00'
+# 		#MANDATORY ARGUMENT
+# 		if 'end_datetime' in data:
+# 			event['end']['dateTime']= data['end_datetime']
+# 		else:
+# 			event['end']['dateTime']= '2016-05-28T21:00:00-07:00'#str(datetime.datetime.now() + datetime.timedelta(hours=1))#str(timezone.now() +timezone.timedelta(hours=1))#'2016-05-28T14:00:00-07:00'
+
+# 		if 'recurrence' in data:
+# 			event['recurrence'] = data['recurrence']
+# 		else:
+# 			event['recurrence'] ='RRULE:FREQ=DAILY;COUNT=2'
+
+# 		if 'reminders' in data:
+# 			event['reminders']= data['reminders']
+# 		else:
+# 			event['reminders']= {
+# 				'useDefault': False,
+# 				'overrides': [
+# 					{'method': 'email', 'minutes': 24 * 60},
+# 					{'method': 'popup', 'minutes': 10},
+# 				],
+# 			}	
+
+# 		e = service.events().insert(calendarId='primary', body=event).execute()
+# 		# pdb.set_trace()
+# 		# return HttpResponseRedirect("/scheduler/home")
+
+
+# #GET: return all skills lists
+# #POST: add one skill list, request must be dictionary w ALL skills (skills{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+# @api_view(['GET', 'POST'])
+# def skill_collection(request):
+# 	if request.method == 'GET':
+# 		skills = Skill.objects.all()
+# 		serializer = SkillSerializer(skills, many=True)
+# 		return Response(serializer.data)
+# 	if request.method == 'POST':
+# 		data = request.data
+# 		serializer = SkillSerializer(data=data, partial=True)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+
+# #GET: return all skills lists
+# #POST: edit one skill list, request must be dictionary w ALL skills (skills{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+# @api_view(['GET', 'POST'])
+# def skill_element(request, pk):
+# 	try:
+# 		skill = Skill.objects.get(pk=pk)
+# 	except Teacher.DoesNotExist:
+# 		return HttpResponse(status=404)
+		
+# 	if request.method == 'GET':
+# 		serializer = SkillSerializer(skill)
+# 		return Response(serializer.data)
+
+# 	if request.method == 'POST':
+# 		data = request.data
+# 		serializer =SkillSerializer(skill, data=data, partial=True)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+
+# #GET: return all skills lists
+# #POST: add one skill list, request must be dictionary w ALL availability (availability{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+# @api_view(['GET', 'POST'])
+# def availability_collection(request):
+# 	if request.method == 'GET':
+# 		availability = Skill.objects.all()
+# 		serializer = SkillSerializer(availability, many=True)
+# 		return Response(serializer.data)
+# 	if request.method == 'POST':
+# 		data = request.data
+# 		serializer = SkillSerializer(data=data, partial=True)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+
+# #GET: return all availability lists
+# #POST: edit one skill list, request must be dictionary w ALL availability (availability{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
+# @api_view(['GET', 'POST'])
+# def availability_element(request, pk):
+# 	try:
+# 		skill = Skill.objects.get(pk=pk)
+# 	except Teacher.DoesNotExist:
+# 		return HttpResponse(status=404)
+		
+# 	if request.method == 'GET':
+# 		serializer = SkillSerializer(skill)
+# 		return Response(serializer.data)
+
+# 	if request.method == 'POST':
+# 		data = request.data
+# 		serializer =SkillSerializer(skill, data=data, partial=True)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+# #google calendar api
+# def get_credentials():
+# 	"""Gets valid user credentials from storage.
+	
+# 	If nothing has been stored, or if the stored credentials are invalid,
+# 	the OAuth2 flow is completed to obtain the new credentials.
+
+# 	Returns:
+# 	    Credentials, the obtained credential.
+# 	"""
+# 	home_dir = os.path.expanduser('~')
+# 	credential_dir = os.path.join(home_dir, '.credentials')
+# 	if not os.path.exists(credential_dir):
+# 		os.makedirs(credential_dir)
+# 	redential_path = os.path.join(credential_dir,
+# 								'scheduler.json')
+
+# 	store = oauth2client.file.Storage(credential_path)
+# 	credentials = store.get()
+# 	if not credentials or credentials.invalid:
+# 		flow = client.flow_from_clientsecrets(CLIENT_SECRET, SCOPES)
+# 		flow.user_agent = APPLICATION_NAME
+# 		if flags:
+# 			credentials = tools.run_flow(flow, store, flags)
+# 		else: # Needed only for compatibility with Python 2.6
+# 			credentials = tools.run(flow, store)
+# 		print('Storing credentials to ' + credential_path)
+# 	return credentials
+
+# @login_required
+# def index(request):
+# 	pdb.set_trace()
+# 	# use the first REDIRECT_URI if you are developing your app
+# 	# locally, and the second in production
+# 	# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+# 	# # REDIRECT_URI = "https://%s%s" % (
+# 	# # 	get_current_site(request).domain, reverse("oauth2:return"))
+# 	# FLOW = flow_from_clientsecrets(
+# 	# 	CLIENT_SECRETS,
+# 	# 	scope=SCOPES,
+# 	# 	redirect_uri=REDIRECT_URI
+# 	# )
+# 	# user = request.user
+# 	# storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	# credential = storage.get()
+# 	# if credential is None or credential.invalid is True:
+# 	# 	FLOW.params['state'] = xsrfutil.generate_token(
+# 	# 		settings.SECRET_KEY, user)
+# 	# 	authorize_url = FLOW.step1_get_authorize_url()
+# 	# 	f = FlowModel(id=user, flow=FLOW)
+# 	# 	f.save()
+# 	# 	return HttpResponseRedirect(authorize_url)
+# 	# else:
+# 	# 	http = httplib2.Http()
+# 	# 	http = credential.authorize(http)
+# 	# 	service = build('calendar', 'v3', http=http)
+# 	# 	event = {
+# 	# 		'summary': 'Event Check',
+# 	# 		'location': '5127 Sheridan Blvd, Broomfield, CO 80020',
+# 	# 		'description': 'Test for event 1',
+# 	# 		'start': {
+# 	# 			'dateTime': '2016-05-28T09:00:00-07:00',
+# 	# 			'timeZone': 'America/Denver',
+# 	# 		},
+# 	# 		'end' : {
+# 	# 			'dateTime': '2016-05-28T13:00:00-07:00',
+# 	# 			'timeZone': 'America/Denver',
+# 	# 		},
+# 	# 		'recurrence': [
+# 	# 			'RRULE:FREQ=DAILY;COUNT=2'
+# 	# 		],
+# 	# 		'reminders': {
+# 	# 			'useDefault': False,
+# 	# 			'overrides': [
+# 	# 				{'method': 'email', 'minutes': 24 * 60},
+# 	# 				{'method': 'popup', 'minutes': 10},
+# 	# 			],
+# 	# 		},
+# 	# 	}
+
+# 	# 	e = service.events().insert(calendarId='primary', body=event).execute()
+
+# 	return HttpResponseRedirect("/scheduler/home")
+
+		# return ('''*** %r event added:
+		# 	Start: %s
+		# 	End: $s''' (e['summary'].encode('utf-8'),
+		# 		e['start']['dateTime'], e['end']['dateTime']))
+		# # return render(
+		# 	request, 'oauth2_authentication/main.html', {'ids':ids})
+
+
+# @login_required
+# @api_view(['GET','POST'])
+# def event_collection(request):
+
+# 	if request.method == 'GET':
+# 		events = Event.objects.all()
+# 		serializer = EventSerializer(events, many=True)
+# 		return Response(serializer.data)
+# 	if request.method == 'POST':
+# 		event_info = request.data
+# 		data = {'student':request.data.get("student_id"), 'teacher':request.data.get("teacher_id")}
+# 		serializer = EventSerializer(data=data, partial=True)
+# 		if serializer.is_valid():
+# 			event_post(request) #sends data to create event in gCal
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+# #GET: return one event
+# #POST: edit one event's skills, skills{'skill_1: True, 'skill_2':False...}
+# @api_view(['GET','POST'])
+# def event_element(request, pk):
+# 	try:
+# 		event = Event.objects.get(pk=pk)
+# 	except Event.DoesNotExist:
+# 		return HttpResponse(status=404)
+# 	if request.method == 'GET':
+# 		event = Event.objects.get(pk=pk)
+# 		serializer = EventSerializer(event)
+# 		return Response(serializer.data)
+# 	if request.method == 'POST':
+# 		data = request.data
+# 		serializer = EventSerializer(event, data=data, partial=True)
+# 		if serializer.is_valid():
+# 			serializer.save()
+# 			return Response(serializer.data, status=status.HTTP_201_CREATED)
+# 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+##gCal
+
+# ###WEB Client Secrets
+# ##Client_secrets = db.get..
+# pdb.set_trace()
+# # CLIENT_SECRETS = json.dumps({
+# # 	"web":{
+# # 		"client_id":"323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com",
+# # 		"project_id":"psyched-oxide-115203",
+# # 		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
+# # 		"token_uri":"https://accounts.google.com/o/oauth2/token",
+# # 		# "client_secret":os.environ['CLIENT_SECRET'],
+# # 		"client_secret": ClientSecret.objects.get(pk=1),
+# # 		"redirect_uris":[
+# # 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
+# # 			"http://127.0.0.1:8000/scheduler/oauth2callback"
+# # 		],
+# # 		"javascript_origins":["http://localhost:8000"]
+# # 	}
+# # })
+# # client_dict = {
+# # 	"client_id" : os.environ['client_id'],
+# # 	"project_id" : os.environ['project_id'],
+# # 	"auth_uri" : os.environ['']
+# # }
+
+# ###LOCAL Client Secrets
+# # /schedule2/scheduler/<file>
+# CLIENT_SECRETS = os.path.join(
+# 	os.path.dirname(__file__), 'client_secret.json')
+
+# SCOPES = (
+# 	'https://www.googleapis.com/auth/calendar',
+# 	'https://www.googleapis.com/auth/drive.metadata.readonly'
+# )
+
+# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+# # REDIRECT_URI = "https://%s%s" % (
+# # 	get_current_site(request).domain, reverse("scheduler:return"))
+
+# @login_required(login_url='/scheduler/login/')
+# @api_view(['GET'])
+# def event_get(request, eventId):
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("scheduler:return"))
+# 	pdb.set_trace()
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		try:
+# 			event = service.events().get(calendarId='primary', eventId=eventId).execute()
+# 		except Event.DoesNotExist:
+# 			return HttpResponse(status=404)
+# 		return Response(event)
+
+# # @login_required(login_url='/scheduler/login/')
+# @api_view(['GET'])
+# def events_get(request):
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("scheduler:return"))
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		events = service.events().list(calendarId='primary').execute()
+# 		return Response(events)
+
+# #add event to google calendar
+# def event_post(request):
+# 	# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+# 	# REDIRECT_URI = 'https://www.getpostman.com/oauth2/callback'
+# 	# REDIRECT_URI = "https://%s%s" % (
+# 	# 	get_current_site(request).domain, reverse("scheduler:return"))
+# 	FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
+# 	user = request.user
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	credential = storage.get()
+# 	if credential is None or credential.invalid is True:
+# 		FLOW.params['state'] = xsrfutil.generate_token(
+# 			settings.SECRET_KEY, user)
+# 		authorize_url = FLOW.step1_get_authorize_url()
+# 		f = FlowModel(id=user, flow=FLOW)
+# 		f.save()
+# 		return HttpResponseRedirect(authorize_url)
+# 	else:
+		
+# 		http = httplib2.Http()
+# 		http = credential.authorize(http)
+# 		service = build('calendar', 'v3', http=http)
+# 		data = request.data
+# 		event = {
+# 			'location': '5127 Sheridan Blvd, Broomfield, CO 80020',
+# 			'start': {
+# 				'timeZone': 'America/Denver',
+# 			},
+# 			'end' : {
+# 				'timeZone': 'America/Denver',
+# 			},
+# 		}
+# 		if 'event_id' in data:
+# 			event['summary']= 'Event' + data['event_id']
+# 		else:
+# 			event['summary']= 'Event w/o ID'
+# 		if 'description' in data:
+# 			event['description']= data['description']
+# 		else:
+# 			event['summary']= 'Test for event w/o ID'
+
+# 		#MANDATORY ARGUMENT
+# 		if 'start_datetime' in data:
+# 			event['start']['dateTime']= data['start_datetime']
+# 		else:
+# 			event['start']['dateTime']= '2016-05-28T13:00:00-07:00'
+# 		#MANDATORY ARGUMENT
+# 		if 'end_datetime' in data:
+# 			event['end']['dateTime']= data['end_datetime']
+# 		else:
+# 			event['end']['dateTime']= '2016-05-28T14:00:00-07:00'
+
+# 		if 'recurrence' in data:
+# 			event['recurrence'] = data['recurrence']
+# 		else:
+# 			event['recurrence'] ='RRULE:FREQ=DAILY;COUNT=2'
+
+# 		if 'reminders' in data:
+# 			event['reminders']= data['reminders']
+# 		else:
+# 			event['reminders']= {
+# 				'useDefault': False,
+# 				'overrides': [
+# 					{'method': 'email', 'minutes': 24 * 60},
+# 					{'method': 'popup', 'minutes': 10},
+# 				],
+# 			}	
+
+# 		e = service.events().insert(calendarId='primary', body=event).execute()
+# 		return HttpResponseRedirect("/scheduler/home")
+
+
+# def get_credentials():
+# 	"""Gets valid user credentials from storage.
+	
+# 	If nothing has been stored, or if the stored credentials are invalid,
+# 	the OAuth2 flow is completed to obtain the new credentials.
+
+# 	Returns:
+# 	    Credentials, the obtained credential.
+# 	"""
+# 	home_dir = os.path.expanduser('~')
+# 	credential_dir = os.path.join(home_dir, '.credentials')
+# 	if not os.path.exists(credential_dir):
+# 		os.makedirs(credential_dir)
+# 	redential_path = os.path.join(credential_dir,
+# 								'scheduler.json')
+
+# 	store = oauth2client.file.Storage(credential_path)
+# 	credentials = store.get()
+# 	if not credentials or credentials.invalid:
+# 		flow = client.flow_from_clientsecrets(CLIENT_SECRET, SCOPES)
+# 		flow.user_agent = APPLICATION_NAME
+# 		if flags:
+# 			credentials = tools.run_flow(flow, store, flags)
+# 		else: # Needed only for compatibility with Python 2.6
+# 			credentials = tools.run(flow, store)
+# 		print('Storing credentials to ' + credential_path)
+# 	return credentials
+
+
+# @login_required
+# def auth_return(request):
+# 	user = request.user
+# 	if not xsrfutil.validate_token(
+# 		settings.SECRET_KEY, request.GET['state'], user):
+# 		return HttpResponseBadRequest()
+# 	FLOW = FlowModel.objects.get(id=user).flow
+# 	credential = FLOW.step2_exchange(request.GET)
+# 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+# 	storage.put(credential)
+# 	return HttpResponseRedirect("/scheduler")
+
 	# monday_start = models.TimeField('monday start', null=True, blank=True)
 	# monday_end = models.TimeField('monday end', null=True, blank=True)
 	# monday_duration = models.FloatField(default=0)

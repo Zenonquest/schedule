@@ -146,20 +146,17 @@ class Availability(models.Model):
 	teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
 
 class FlowModel(models.Model):
-	id = models.ForeignKey(User, primary_key=True)
+	id = models.OneToOneField(User, primary_key=True)
 	flow = FlowField()
 
 class CredentialsModel(models.Model):
-	id = models.ForeignKey(User, primary_key=True)
+	id = models.OneToOneField(User, primary_key=True)
 	credential = CredentialsField()
 
 class ClientSecret(models.Model):
-	key = models.CharField(max_length=200)
-
-# class Dicty(models.Model):
-# 	name = models.CharField(max_length=50)
-
-# class KeyVal(models.Model):
-# 	container = models.ForeignKey(Dicty, db_index=True)
-# 	key = models.CharField(max_length=240, db_index=True)
-# 	value = models.CharField(max_length=240, db_index=True)
+	SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = models.CharField(max_length=200)
+	SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = models.CharField(max_length=50)
+	SOCIAL_AUTH_GOOGLE_SCOPE1 = models.TextField()
+	SOCIAL_AUTH_GOOGLE_SCOPE2 = models.TextField()
+	SOCIAL_AUTH_LOGIN_REDIRECT_URL = models.CharField(max_length=50)
+	SOCIAL_AUTH_LOGIN_URL = models.CharField(max_length=50)

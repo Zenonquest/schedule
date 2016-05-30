@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^scheduler/', include('social.apps.django_app.urls', namespace='social')),
     #marinamele 
     # url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider'))
+    url(r'^oauth2/', include('scheduler.urls', namespace='oauth'))
+
 ]

@@ -10,10 +10,6 @@ urlpatterns = [
     url(r'^teacher/(?P<pk>[0-9]+)/$', views.TeacherView.as_view(), name='teacher detail'),
     url(r'^event/(?P<pk>[0-9]+)/$', views.EventView.as_view(), name='event detail'),
     url(r'^event/$', views.EventIndexView.as_view(), name='event list'),
-    
-    #oauth2
-    # url(r'^user/$', views.UserViewSet, name='user list'),
-    # url(r'^group/$', views.GroupViewSet, name='group list'),
 
     #api
     url(r'^api/teacher/$', views.teacher_collection),
@@ -31,7 +27,7 @@ urlpatterns = [
     url(r'^api/gevent/(?P<eventId>[A-Za-z0-9_.]+)/$', views.event_get),
 
     #socialauth
-    url(r'^login/$', views.login),
+    url(r'^login$', views.login),
     url(r'^home/$', views.home),
     url(r'^logout/$', views.logout),
     # url('', include('social.apps.django_app.urls', namespace='social')),
@@ -39,5 +35,4 @@ urlpatterns = [
     #marinamele
     # url(r'^$', views.index, name='index'),
     url(r'oauth2callback', views.auth_return, name='return'),
-    
 ]
