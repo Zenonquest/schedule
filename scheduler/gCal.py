@@ -16,6 +16,7 @@ from oauth2client.contrib.django_orm import Storage
 from apiclient.discovery import build
  
 from django.contrib.auth.decorators import login_required
+
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -24,6 +25,8 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 import pdb
 from .models import CredentialsModel
+# from django.contrib.sites.models import get_current_site
+from django.template import *
 
 import json
 
@@ -47,23 +50,33 @@ CLIENT_SECRETS = os.path.join(
 # }, ensure_ascii=False)
 
 # REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
-REDIRECT_URI = "https://%s%s" % (
-	get_current_site(request).domain, reverse("scheduler:return"))
+# REDIRECT_URI = "https://%s%s" % (
+# 	get_current_site(request).domain, reverse("scheduler:return"))
+
 
 SCOPES = (
 	'https://www.googleapis.com/auth/calendar',
 	'https://www.googleapis.com/auth/drive.metadata.readonly'
 )
-
-FLOW = flow_from_clientsecrets(
-		CLIENT_SECRETS,
-		scope=SCOPES,
-		redirect_uri=REDIRECT_URI
-	)
+# REDIRECT_URI = "https://%s%s" % (
+# 	request.get_host, reverse("scheduler:return"))
+# FLOW = flow_from_clientsecrets(
+# 		CLIENT_SECRETS,
+# 		scope=SCOPES,
+# 		redirect_uri=REDIRECT_URI
+# 	)
 
 @login_required
 @api_view(['GET'])
 def event_get(request, eventId):
+	REDIRECT_URI = "https://%s%s" % (
+		request.get_host, reverse("scheduler:return"))
+	FLOW = flow_from_clientsecrets(
+			CLIENT_SECRETS,
+			scope=SCOPES,
+			redirect_uri=REDIRECT_URI
+		)
+
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
@@ -87,6 +100,13 @@ def event_get(request, eventId):
 @login_required
 @api_view(['GET'])
 def events_get(request):
+	REDIRECT_URI = "https://%s%s" % (
+		request.get_host, reverse("scheduler:return"))
+	FLOW = flow_from_clientsecrets(
+			CLIENT_SECRETS,
+			scope=SCOPES,
+			redirect_uri=REDIRECT_URI
+		)
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
@@ -106,11 +126,14 @@ def events_get(request):
 
 #add event to google calendar
 def event_post(request):
+	REDIRECT_URI = "https://%s%s" % (
+		request.get_host, reverse("scheduler:return"))
 	FLOW = flow_from_clientsecrets(
-		CLIENT_SECRETS,
-		scope=SCOPES,
-		redirect_uri=REDIRECT_URI
-	)
+			CLIENT_SECRETS,
+			scope=SCOPES,
+			redirect_uri=REDIRECT_URI
+		)
+
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
