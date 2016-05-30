@@ -46,9 +46,9 @@ CLIENT_SECRETS = os.path.join(
 # 	}
 # }, ensure_ascii=False)
 
-REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
-# REDIRECT_URI = "https://%s%s" % (
-# 	get_current_site(request).domain, reverse("scheduler:return"))
+# REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
+REDIRECT_URI = "https://%s%s" % (
+	get_current_site(request).domain, reverse("scheduler:return"))
 
 SCOPES = (
 	'https://www.googleapis.com/auth/calendar',
