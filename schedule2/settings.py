@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     #social auth
     'social.apps.django_app.default',
     'corsheaders',
+    #get_current_site
+    'django.contrib.sites',
 
 ]
 
@@ -189,3 +191,4 @@ CORS_ALLOW_CREDENTIALS = True
 
 LOGIN_URL='/scheduler/login'
 LOGIN_REDIRECT_URL='/scheduler/login'
+

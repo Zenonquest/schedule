@@ -25,7 +25,6 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 import pdb
 from .models import CredentialsModel
-# from django.contrib.sites.models import get_current_site
 from django.template import *
 
 import json
@@ -58,25 +57,18 @@ SCOPES = (
 	'https://www.googleapis.com/auth/calendar',
 	'https://www.googleapis.com/auth/drive.metadata.readonly'
 )
-# REDIRECT_URI = "https://%s%s" % (
-# 	request.get_host, reverse("scheduler:return"))
-# FLOW = flow_from_clientsecrets(
-# 		CLIENT_SECRETS,
-# 		scope=SCOPES,
-# 		redirect_uri=REDIRECT_URI
-# 	)
+
 
 @login_required
 @api_view(['GET'])
 def event_get(request, eventId):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host, reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
 			redirect_uri=REDIRECT_URI
 		)
-
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
@@ -101,7 +93,7 @@ def event_get(request, eventId):
 @api_view(['GET'])
 def events_get(request):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host, reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
@@ -127,13 +119,12 @@ def events_get(request):
 #add event to google calendar
 def event_post(request):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host, reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
 			redirect_uri=REDIRECT_URI
 		)
-
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
