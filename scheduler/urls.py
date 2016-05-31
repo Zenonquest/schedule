@@ -35,4 +35,7 @@ urlpatterns = [
     #marinamele
     # url(r'^$', views.index, name='index'),
     url(r'oauth2callback', views.auth_return, name='return'),
+    url(r'oauth2callback2gevents', views.gevents_return, name='gevents_return'),
+    url(r'oauth2callback2events', views.gevents_return, name='events_return'),
+    url(r'oauth2callback2postevent', views.gevents_return, name='post_event_return'),
 ]

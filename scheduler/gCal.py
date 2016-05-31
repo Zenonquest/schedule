@@ -31,27 +31,10 @@ import json
 
 CLIENT_SECRETS = os.path.join(
 	os.path.dirname(__file__), 'client_secret.json')
-# cs = str(ClientSecret.objects.get(pk=1))
-# CLIENT_SECRETS = json.dumps({
-# 	"web":{
-# 		"client_id":"323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com",
-# 		"project_id":"psyched-oxide-115203",
-# 		"auth_uri":"https://accounts.google.com/o/oauth2/auth",
-# 		"token_uri":"https://accounts.google.com/o/oauth2/token",
-# 		# "client_secret":os.environ['CLIENT_SECRET'],
-# 		"client_secret": cs,
-# 		"redirect_uris":[
-# 			"http://127.0.0.1:8000/scheduler/complete/google-oauth2/",
-# 			"http://127.0.0.1:8000/scheduler/oauth2callback"
-# 		],
-# 		"javascript_origins":["http://localhost:8000"]
-# 	}
-# }, ensure_ascii=False)
 
 # REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
 # REDIRECT_URI = "https://%s%s" % (
-# 	get_current_site(request).domain, reverse("scheduler:return"))
-
+# 	request.get_host(), reverse("scheduler:return"))
 
 SCOPES = (
 	'https://www.googleapis.com/auth/calendar',
@@ -63,7 +46,7 @@ SCOPES = (
 @api_view(['GET'])
 def event_get(request, eventId):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host(), reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:gevents_return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
@@ -90,10 +73,23 @@ def event_get(request, eventId):
 		return Response(event)
 
 @login_required
+def gevents_return(request):
+	user = request.user
+	if not xsrfutil.validate_token(
+		settings.SECRET_KEY, str(request.GET['state']), user):
+		return HttpResponseBadRequest()
+	FLOW = FlowModel.objects.get(id=user).flow
+	credential = FLOW.step2_exchange(request.GET)
+	storage = Storage(CredentialsModel, 'id', user, 'credential')
+	storage.put(credential)
+	return HttpResponseRedirect("/scheduler/api/gevent/")
+
+
+@login_required
 @api_view(['GET'])
 def events_get(request):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host(), reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:events_return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
@@ -116,10 +112,22 @@ def events_get(request):
 		events = service.events().list(calendarId='primary').execute()
 		return Response(events)
 
+@login_required
+def events_return(request):
+	user = request.user
+	if not xsrfutil.validate_token(
+		settings.SECRET_KEY, str(request.GET['state']), user):
+		return HttpResponseBadRequest()
+	FLOW = FlowModel.objects.get(id=user).flow
+	credential = FLOW.step2_exchange(request.GET)
+	storage = Storage(CredentialsModel, 'id', user, 'credential')
+	storage.put(credential)
+	return HttpResponseRedirect("/scheduler/api/event/")
+
 #add event to google calendar
 def event_post(request):
 	REDIRECT_URI = "https://%s%s" % (
-		request.get_host(), reverse("scheduler:return"))
+		request.get_host(), reverse("scheduler:post_event_return"))
 	FLOW = flow_from_clientsecrets(
 			CLIENT_SECRETS,
 			scope=SCOPES,
@@ -188,3 +196,14 @@ def event_post(request):
 
 		e = service.events().insert(calendarId='primary', body=event).execute()
 
+@login_required
+def post_event_return(request):
+	user = request.user
+	if not xsrfutil.validate_token(
+		settings.SECRET_KEY, str(request.GET['state']), user):
+		return HttpResponseBadRequest()
+	FLOW = FlowModel.objects.get(id=user).flow
+	credential = FLOW.step2_exchange(request.GET)
+	storage = Storage(CredentialsModel, 'id', user, 'credential')
+	storage.put(credential)
+	return HttpResponseRedirect("/scheduler/api/event/")

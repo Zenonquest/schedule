@@ -47,22 +47,6 @@ INSTALLED_APPS = [
 
 ]
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES':  (
-#         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-#     ),
-#     ### uncomment when completing oauth2: problems with authentication
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     )
-
-# }
-
-# OAUTH2_PROVIDER = {
-#     # this is the list of available scopes
-#     'SCOPES': {'read': 'Read scope', 'write': 'Write scope', 'groups': 'Access to your groups'},
-# }
-
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -167,7 +151,6 @@ ALLOWED_HOSTS = ['*']
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en1/.9/howto/static-files/
-
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -175,11 +158,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-
-# STATICFILES_FINDERS = [
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-# ]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
