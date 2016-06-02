@@ -4,7 +4,7 @@ from rest_framework import status, viewsets, permissions
 
 from django.contrib.auth.decorators import login_required
 
-from .models import Availability
+from .models import Availability, Teacher
 from .serializers import AvailabilitySerializer
 
 #GET: return all skills lists
