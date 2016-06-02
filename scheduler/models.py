@@ -13,6 +13,10 @@ class Teacher(models.Model):
 	teacher_id = models.AutoField(primary_key=True)
 	nickname = models.CharField(max_length=200, unique=True)
 
+	def get_availability(self):
+		availability = Availability.object.get(teacher=self.teacher_id)
+		return availability
+
 	def __unicode__(self):
 		return self.nickname
 

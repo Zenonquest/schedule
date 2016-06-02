@@ -46,3 +46,24 @@ def availability_element(request, pk):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+@api_view(['GET', 'POST'])
+def availability_by_teacher(request, teacher_id):
+	try:
+		teacher = Teacher.objects.get(teacher_id=teacher_id)
+		availability = teacher.get_availability()
+	except Teacher.DoesNotExist:
+		return HttpResponse(status=400)
+
+	if request.method == 'GET':	
+		serializer = AvailibitliySerializer(availability)
+		return Response(serializer.data)
+
+	if request.method == 'POST':
+		data = request.data
+		serializer =AvailabilitySerializer(availability, data=data, partial=True)
+		if serializer.is_valid():
+			serializer.save()
+			return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+	return HttpResponse('I\'m a teapot short and stout.', status=418)
