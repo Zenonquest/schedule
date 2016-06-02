@@ -8,3 +8,4 @@ staticfiles
 local_settings.py
 .env
 old.py
+private.py

@@ -10,12 +10,13 @@ from .models import CredentialsModel, FlowModel
 import os
 import httplib2
 from oauth2client.contrib import xsrfutil
-from oauth2client.client import flow_from_clientsecrets
+from oauth2client.client import OAuth2WebServerFlow# flow_from_clientsecrets
 from oauth2client.contrib.django_orm import Storage
 # import apiclient
 from apiclient.discovery import build
  
 from django.contrib.auth.decorators import login_required
+
 
 from django.http import HttpResponseBadRequest
 from django.http import HttpResponseRedirect
@@ -29,8 +30,8 @@ from django.template import *
 
 import json
 
-CLIENT_SECRETS = os.path.join(
-	os.path.dirname(__file__), 'client_secret.json')
+# CLIENT_SECRETS = os.path.join(
+# 	os.path.dirname(__file__), 'client_secret.json')
 
 # REDIRECT_URI = 'http://127.0.0.1:8000/scheduler/oauth2callback'
 # REDIRECT_URI = "https://%s%s" % (
@@ -41,17 +42,22 @@ SCOPES = (
 	'https://www.googleapis.com/auth/drive.metadata.readonly'
 )
 
-
 @login_required
 @api_view(['GET'])
 def event_get(request, eventId):
 	REDIRECT_URI = "https://%s%s" % (
 		request.get_host(), reverse("scheduler:gevents_return"))
-	FLOW = flow_from_clientsecrets(
-			CLIENT_SECRETS,
-			scope=SCOPES,
-			redirect_uri=REDIRECT_URI
-		)
+	# FLOW = flow_from_clientsecrets(
+	# 		CLIENT_SECRETS,
+	# 		scope=SCOPES,
+	# 		redirect_uri=REDIRECT_URI
+	# 	)
+	FLOW = OAuth2WebServerFlow(
+		client_id='323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com',
+		client_secret=os.environ['CLIENT_SECRET'],
+		scope=SCOPES,
+		redirect_uri=REDIRECT_URI
+	)
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
@@ -90,11 +96,17 @@ def gevents_return(request):
 def events_get(request):
 	REDIRECT_URI = "https://%s%s" % (
 		request.get_host(), reverse("scheduler:events_return"))
-	FLOW = flow_from_clientsecrets(
-			CLIENT_SECRETS,
-			scope=SCOPES,
-			redirect_uri=REDIRECT_URI
-		)
+	# FLOW = flow_from_clientsecrets(
+	# 		CLIENT_SECRETS,
+	# 		scope=SCOPES,
+	# 		redirect_uri=REDIRECT_URI
+	# 	)
+	FLOW = OAuth2WebServerFlow(
+		client_id='323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com',
+		client_secret=os.environ['CLIENT_SECRET'],
+		scope=SCOPES,
+		redirect_uri=REDIRECT_URI
+	)
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
@@ -128,11 +140,17 @@ def events_return(request):
 def event_post(request):
 	REDIRECT_URI = "https://%s%s" % (
 		request.get_host(), reverse("scheduler:post_event_return"))
-	FLOW = flow_from_clientsecrets(
-			CLIENT_SECRETS,
-			scope=SCOPES,
-			redirect_uri=REDIRECT_URI
-		)
+	# FLOW = flow_from_clientsecrets(
+	# 		CLIENT_SECRETS,
+	# 		scope=SCOPES,
+	# 		redirect_uri=REDIRECT_URI
+	# 	)
+	FLOW = OAuth2WebServerFlow(
+		client_id='323423619559-orlpuuiaalb7sp3ooblt4mjmp32ffq1t.apps.googleusercontent.com',
+		client_secret=os.environ['CLIENT_SECRET'],
+		scope=SCOPES,
+		redirect_uri=REDIRECT_URI
+	)
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
 	credential = storage.get()
