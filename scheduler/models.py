@@ -14,7 +14,7 @@ class Teacher(models.Model):
 	nickname = models.CharField(max_length=200, unique=True)
 
 	def get_availability(self):
-		availability = Availability.objects.get(teacher=self.teacher_id)
+		availability = Availability.objects.get(teacher=self.teacher_id)[:1]
 		return availability
 
 	def __unicode__(self):

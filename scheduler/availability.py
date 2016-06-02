@@ -56,7 +56,7 @@ def availability_by_teacher(request, teacher_id):
 		return HttpResponse(status=400)
 
 	if request.method == 'GET':	
-		serializer = AvailibitliySerializer(availability)
+		serializer = AvailabilitySerializer(availability)
 		return Response(serializer.data)
 
 	if request.method == 'POST':
