@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^api/skill/(?P<pk>[0-9]+)/$', views.skill_element),
     url(r'^api/availability/$', views.availability_collection),
     url(r'^api/availability/(?P<pk>[0-9]+)/$', views.availability_element),
-    url(r'^api/availability_by_teacher/(?P<teacher_id>[0-9]+)/$', views.availability_by_teacher),
+    url(r'^api/teacher/id/availability/(?P<teacher_id>[0-9]+)/$', views.availability_by_teacher),
     url(r'^api/gevent/$', views.events_get),
     url(r'^api/gevent/(?P<eventId>[A-Za-z0-9_.]+)/$', views.event_get),
 
