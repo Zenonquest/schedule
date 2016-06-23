@@ -13,7 +13,7 @@ from .serializers import EventSerializer
 #GET: return all events
 #POST: add new event
 ##post request requires: student_id, teacher_id, start_datetime, end_datetime
-@login_required
+
 @api_view(['GET','POST'])
 def event_collection(request):
 	if request.method == 'GET':

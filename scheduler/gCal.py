@@ -42,7 +42,7 @@ SCOPES = (
 	'https://www.googleapis.com/auth/drive.metadata.readonly'
 )
 
-@login_required
+
 @api_view(['GET'])
 def event_get(request, eventId):
 	REDIRECT_URI = "https://%s%s" % (
@@ -78,7 +78,7 @@ def event_get(request, eventId):
 			return HttpResponse(status=404)
 		return Response(event)
 
-@login_required
+
 def gevents_return(request):
 	user = request.user
 	if not xsrfutil.validate_token(
@@ -91,7 +91,7 @@ def gevents_return(request):
 	return HttpResponseRedirect("/scheduler/api/gevent/")
 
 
-@login_required
+
 @api_view(['GET'])
 def events_get(request):
 	REDIRECT_URI = "https://%s%s" % (
@@ -124,7 +124,7 @@ def events_get(request):
 		events = service.events().list(calendarId='primary').execute()
 		return Response(events)
 
-@login_required
+
 def events_return(request):
 	user = request.user
 	if not xsrfutil.validate_token(
