@@ -49,7 +49,7 @@ def skill_element(request, pk):
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
 @api_view(['GET', 'POST'])
-def skill_byteacher(request, teacher_id):
+def skill_by_teacher(request, teacher_id):
 	try:
 		skill = Skill.objects.get(teacher_id = teacher_id)
 	except Skill.DoesNotExist:
