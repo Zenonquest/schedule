@@ -57,6 +57,10 @@ def skill_by_teacher(request, teacher_id):
 	except Skill.DoesNotExist:
 		return HttpResponse(status=404)
 
+	if request.method == 'GET':
+		serializer = SkillSerializer(skill)
+		return Response(serializer.data)
+
 	if request.method == 'POST':
 		data = request.data
 		serializer =SkillSerializer(skill, data=data, partial=True)
