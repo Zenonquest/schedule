@@ -28,7 +28,7 @@ def teacher_collection(request):
 #GET: return one teacher
 #POST: edit one teacher
 #editable fields: all
-@api_view(['GET', 'POST'])
+@api_view(['GET', 'POST', 'DELETE'])
 def teacher_element(request, pk):
 	#collect single teacher before processing request
 	try:
@@ -48,3 +48,7 @@ def teacher_element(request, pk):
 			return Response(serializer.data, status=status.HTTP_201_CREATED)
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
+
+	if request.method == 'DELETE':
+		teacher.delete()
+		return Response(status=status.HTTP_204_NO_CONTENT)

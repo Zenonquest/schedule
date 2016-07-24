@@ -153,6 +153,7 @@ def event_post(request):
 	)
 	user = request.user
 	storage = Storage(CredentialsModel, 'id', user, 'credential')
+	# credential = request.
 	credential = storage.get()
 	if credential is None or credential.invalid is True:
 		FLOW.params['state'] = xsrfutil.generate_token(

@@ -24,7 +24,7 @@ def skill_collection(request):
 		return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 	return HttpResponse('I\'m a teapot short and stout.', status=418)
 
-
+#Parameters: Teacher pk
 #GET: return all skills lists
 #POST: edit one skill list, request must be dictionary w ALL skills (skills{'skill_1: True, 'skill_2':False..., 'skill_15:True'})
 @api_view(['GET', 'POST'])
