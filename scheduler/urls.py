@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^api/testevent/$', views.event_post),
     url(r'^api/skill/$', views.skill_collection),
     url(r'^api/skill/(?P<pk>[0-9]+)/$', views.skill_element),
+    url(r'^api/skill/(?P<pk>[0-9]+)/$', views.skill_byteacher),
     url(r'^api/availability/$', views.availability_collection),
     url(r'^api/availability/(?P<pk>[0-9]+)/$', views.availability_element),
     url(r'^api/teacher/(?P<teacher_id>[0-9]+)/availability/$', views.availability_by_teacher),
