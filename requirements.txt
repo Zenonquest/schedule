@@ -33,7 +33,7 @@ python-social-auth==0.2.19
 pytz==2016.4
 requests==2.5.0
 requests-oauthlib==0.6.1
-rsa==3.4.2
+rsa==4.1
 simplejson==3.8.2
 six==1.10.0
 static3==0.6.1
